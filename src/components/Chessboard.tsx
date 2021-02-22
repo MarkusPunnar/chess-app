@@ -23,6 +23,7 @@ const Chessboard: React.FC<{}> = () => {
   const handleMove = (piece: ChessPiece) => {
     if (!targetedSquarePiece) {
       const legalSquares = calculateLegalSquares(piece, selectedSquare, chessboard);
+      console.log(legalSquares);
       const isMoveAllowed = legalSquares.some((legalSquare) => {
         return (
           legalSquare.location.number === targetedSquare.location.number &&

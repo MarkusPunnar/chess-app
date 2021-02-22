@@ -1,5 +1,15 @@
 import { ChessBoard, ChessPiece, ChessSquare, PieceColor, PieceType } from './interfaces';
-import { getPieceOnSquare } from './helper/pieceHelper';
+import {
+  calculateLegalBackwardLeftDiagonalSquares,
+  calculateLegalBackwardRightDiagonalSquares,
+  calculateLegalBackwardSquares,
+  calculateLegalForwardLeftDiagonalSquares,
+  calculateLegalForwardRightDiagonalSquares,
+  calculateLegalForwardSquares,
+  calculateLegalKnightSquares,
+  calculateLegalLeftSquares,
+  calculateLegalRightSquares,
+} from './helper/moveHelper';
 
 export const calculateLegalSquares = (
   piece: ChessPiece,
@@ -8,95 +18,79 @@ export const calculateLegalSquares = (
 ): ChessSquare[] => {
   switch (piece.type) {
     case PieceType.PAWN:
-      return calculateLegalPawnMoves(piece.color, startingSquare);
+      return calculateLegalPawnMoves(piece.color, startingSquare, board);
     case PieceType.ROOK:
       return calculateLegalRookMoves(startingSquare, board);
+    case PieceType.BISHOP:
+      return calculateLegalBishopMoves(startingSquare, board);
+    case PieceType.QUEEN:
+      return calculateLegalQueenMoves(startingSquare, board);
+    case PieceType.KING:
+      return calculateLegalKingMoves(startingSquare, board);
+    case PieceType.KNIGHT:
+      return calculateLegalKnightMoves(startingSquare, board);
     default:
       return [];
   }
 };
 
+const calculateLegalQueenMoves = (startingSquare: ChessSquare, board: ChessBoard): ChessSquare[] => {
+  return [...calculateLegalRookMoves(startingSquare, board), ...calculateLegalBishopMoves(startingSquare, board)];
+};
+
+const calculateLegalKingMoves = (startingSquare: ChessSquare, board: ChessBoard): ChessSquare[] => {
+  return [
+    ...calculateLegalForwardSquares(startingSquare, board, 1),
+    ...calculateLegalBackwardSquares(startingSquare, board, 1),
+    ...calculateLegalLeftSquares(startingSquare, board, 1),
+    ...calculateLegalRightSquares(startingSquare, board, 1),
+    ...calculateLegalForwardRightDiagonalSquares(startingSquare, board, 1),
+    ...calculateLegalForwardLeftDiagonalSquares(startingSquare, board, 1),
+    ...calculateLegalBackwardLeftDiagonalSquares(startingSquare, board, 1),
+    ...calculateLegalBackwardRightDiagonalSquares(startingSquare, board, 1),
+  ];
+};
+
+const calculateLegalKnightMoves = (startingSquare: ChessSquare, board: ChessBoard): ChessSquare[] => {
+  return calculateLegalKnightSquares(startingSquare, board);
+};
+
 const calculateLegalRookMoves = (startingSquare: ChessSquare, board: ChessBoard): ChessSquare[] => {
-  const legalSquares = [];
-  for (let i = startingSquare.location.number - 1; i > 0; i--) {
-    const squareCandidate: ChessSquare = {
-      location: {
-        letter: startingSquare.location.letter,
-        number: i,
-      },
-    };
-    const squareCandidatePiece = getPieceOnSquare(squareCandidate, board);
-    if (squareCandidatePiece) {
-      if (squareCandidatePiece.color === startingSquare.piece.color) {
-        legalSquares.push(squareCandidate);
-      }
-      break;
-    }
-    legalSquares.push(squareCandidate);
-  }
-  for (let i = startingSquare.location.number + 1; i < 9; i++) {
-    const squareCandidate: ChessSquare = {
-      location: {
-        letter: startingSquare.location.letter,
-        number: i,
-      },
-    };
-    const squareCandidatePiece = getPieceOnSquare(squareCandidate, board);
-    if (squareCandidatePiece) {
-      if (squareCandidatePiece.color === startingSquare.piece.color) {
-        legalSquares.push(squareCandidate);
-      }
-      break;
-    }
-    legalSquares.push(squareCandidate);
-  }
-  return legalSquares;
+  return [
+    ...calculateLegalForwardSquares(startingSquare, board),
+    ...calculateLegalBackwardSquares(startingSquare, board),
+    ...calculateLegalLeftSquares(startingSquare, board),
+    ...calculateLegalRightSquares(startingSquare, board),
+  ];
 };
 
-const calculateLegalPawnMoves = (pieceColor: PieceColor, startingSquare: ChessSquare): ChessSquare[] => {
+const calculateLegalBishopMoves = (startingSquare: ChessSquare, board: ChessBoard): ChessSquare[] => {
+  return [
+    ...calculateLegalForwardRightDiagonalSquares(startingSquare, board),
+    ...calculateLegalForwardLeftDiagonalSquares(startingSquare, board),
+    ...calculateLegalBackwardLeftDiagonalSquares(startingSquare, board),
+    ...calculateLegalBackwardRightDiagonalSquares(startingSquare, board),
+  ];
+};
+
+const calculateLegalPawnMoves = (
+  pieceColor: PieceColor,
+  startingSquare: ChessSquare,
+  board: ChessBoard,
+): ChessSquare[] => {
   if (pieceColor === PieceColor.WHITE) {
-    return calculateLegalWhitePawnMoves(startingSquare);
+    return calculateLegalWhitePawnMoves(startingSquare, board);
   } else {
-    return calculateLegalBlackPawnMoves(startingSquare);
+    return calculateLegalBlackPawnMoves(startingSquare, board);
   }
 };
 
-const calculateLegalWhitePawnMoves = (startingSquare: ChessSquare): ChessSquare[] => {
-  const legalSquares: ChessSquare[] = [
-    {
-      location: {
-        letter: startingSquare.location.letter,
-        number: startingSquare.location.number + 1,
-      },
-    },
-  ];
-  if (startingSquare.location.number === 2) {
-    legalSquares.push({
-      location: {
-        letter: startingSquare.location.letter,
-        number: startingSquare.location.number + 2,
-      },
-    });
-  }
-  return legalSquares;
+const calculateLegalWhitePawnMoves = (startingSquare: ChessSquare, board: ChessBoard): ChessSquare[] => {
+  const maxAllowedSteps = startingSquare.location.number === 2 ? 2 : 1;
+  return calculateLegalForwardSquares(startingSquare, board, maxAllowedSteps);
 };
 
-const calculateLegalBlackPawnMoves = (startingSquare: ChessSquare): ChessSquare[] => {
-  const legalSquares = [
-    {
-      location: {
-        letter: startingSquare.location.letter,
-        number: startingSquare.location.number - 1,
-      },
-    },
-  ];
-  if (startingSquare.location.number === 7) {
-    legalSquares.push({
-      location: {
-        letter: startingSquare.location.letter,
-        number: startingSquare.location.number - 2,
-      },
-    });
-  }
-  return legalSquares;
+const calculateLegalBlackPawnMoves = (startingSquare: ChessSquare, board: ChessBoard): ChessSquare[] => {
+  const maxAllowedSteps = startingSquare.location.number === 7 ? 2 : 1;
+  return calculateLegalBackwardSquares(startingSquare, board, maxAllowedSteps);
 };
