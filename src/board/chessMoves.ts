@@ -1,4 +1,4 @@
-import { ChessBoard, ChessPiece, ChessSquare, PieceColor, PieceType } from './interfaces';
+import { ChessBoard, ChessSquare, MoveDirection, ChessColor, PieceType } from './interfaces';
 import {
   calculateLegalBackwardLeftDiagonalSquares,
   calculateLegalBackwardRightDiagonalSquares,
@@ -8,14 +8,13 @@ import {
   calculateLegalForwardSquares,
   calculateLegalKnightSquares,
   calculateLegalLeftSquares,
+  calculateLegalPawnCaptures,
   calculateLegalRightSquares,
 } from './helper/moveHelper';
+import { getPieceOnSquare } from './helper/pieceHelper';
 
-export const calculateLegalSquares = (
-  piece: ChessPiece,
-  startingSquare: ChessSquare,
-  board: ChessBoard,
-): ChessSquare[] => {
+export const calculateLegalSquares = (startingSquare: ChessSquare, board: ChessBoard): ChessSquare[] => {
+  const piece = startingSquare.piece;
   switch (piece.type) {
     case PieceType.PAWN:
       return calculateLegalPawnMoves(piece.color, startingSquare, board);
@@ -74,11 +73,11 @@ const calculateLegalBishopMoves = (startingSquare: ChessSquare, board: ChessBoar
 };
 
 const calculateLegalPawnMoves = (
-  pieceColor: PieceColor,
+  pieceColor: ChessColor,
   startingSquare: ChessSquare,
   board: ChessBoard,
 ): ChessSquare[] => {
-  if (pieceColor === PieceColor.WHITE) {
+  if (pieceColor === ChessColor.WHITE) {
     return calculateLegalWhitePawnMoves(startingSquare, board);
   } else {
     return calculateLegalBlackPawnMoves(startingSquare, board);
@@ -87,10 +86,16 @@ const calculateLegalPawnMoves = (
 
 const calculateLegalWhitePawnMoves = (startingSquare: ChessSquare, board: ChessBoard): ChessSquare[] => {
   const maxAllowedSteps = startingSquare.location.number === 2 ? 2 : 1;
-  return calculateLegalForwardSquares(startingSquare, board, maxAllowedSteps);
+  const legalSteps = calculateLegalForwardSquares(startingSquare, board, maxAllowedSteps).filter((square) => {
+    return getPieceOnSquare(square, board) === undefined;
+  });
+  return [...legalSteps, ...calculateLegalPawnCaptures(startingSquare, board, MoveDirection.FORWARD)];
 };
 
 const calculateLegalBlackPawnMoves = (startingSquare: ChessSquare, board: ChessBoard): ChessSquare[] => {
   const maxAllowedSteps = startingSquare.location.number === 7 ? 2 : 1;
-  return calculateLegalBackwardSquares(startingSquare, board, maxAllowedSteps);
+  const legalSteps = calculateLegalBackwardSquares(startingSquare, board, maxAllowedSteps).filter((square) => {
+    return getPieceOnSquare(square, board) === undefined;
+  });
+  return [...legalSteps, ...calculateLegalPawnCaptures(startingSquare, board, MoveDirection.BACKWARD)];
 };

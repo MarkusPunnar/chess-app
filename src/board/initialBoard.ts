@@ -1,4 +1,4 @@
-import { ChessBoard, PieceColor, PieceType } from './interfaces';
+import { ChessBoard, ChessColor, PieceType } from './interfaces';
 
 const initialBoard: ChessBoard = {
   rows: [
@@ -11,7 +11,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.ROOK,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -21,7 +21,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.KNIGHT,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -31,7 +31,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.BISHOP,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -41,7 +41,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.QUEEN,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -51,7 +51,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.KING,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -61,7 +61,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.BISHOP,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -71,7 +71,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.KNIGHT,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -81,7 +81,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.ROOK,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
       ],
@@ -96,7 +96,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -106,7 +106,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -116,7 +116,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -126,7 +126,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -136,7 +136,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -146,7 +146,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -156,7 +156,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
         {
@@ -166,7 +166,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.BLACK,
+            color: ChessColor.BLACK,
           },
         },
       ],
@@ -393,7 +393,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -403,7 +403,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -413,7 +413,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -423,7 +423,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -433,7 +433,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -443,7 +443,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -453,7 +453,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -463,7 +463,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.PAWN,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
       ],
@@ -478,7 +478,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.ROOK,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -488,7 +488,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.KNIGHT,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -498,7 +498,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.BISHOP,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -508,7 +508,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.QUEEN,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -518,7 +518,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.KING,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -528,7 +528,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.BISHOP,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -538,7 +538,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.KNIGHT,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
         {
@@ -548,7 +548,7 @@ const initialBoard: ChessBoard = {
           },
           piece: {
             type: PieceType.ROOK,
-            color: PieceColor.WHITE,
+            color: ChessColor.WHITE,
           },
         },
       ],

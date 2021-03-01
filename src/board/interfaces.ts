@@ -12,14 +12,38 @@ export enum SquareColor {
   DARK = 'dark',
 }
 
-export enum PieceColor {
+export enum ChessColor {
   BLACK,
   WHITE,
 }
 
+export enum MoveDirection {
+  BACKWARD = 0,
+  FORWARD = 2,
+}
+
+export interface GameState {
+  currentTurn: ChessColor;
+  white: PlayerState;
+  black: PlayerState;
+}
+
+export interface PlayerState {
+  isInCheck: boolean;
+  castleQueenSide: boolean;
+  castleKingSide: boolean;
+}
+
+export interface ChessMove {
+  startingSquare: ChessSquare;
+  destinationSquare: ChessSquare;
+  secondaryStartingSquare?: ChessSquare;
+  secondaryDestinationSquare?: ChessSquare;
+}
+
 export interface ChessPiece {
   type: PieceType;
-  color: PieceColor;
+  color: ChessColor;
 }
 
 export interface SquareLocation {

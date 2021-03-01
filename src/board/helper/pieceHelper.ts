@@ -1,4 +1,5 @@
 import { ChessBoard, ChessPiece, ChessSquare } from '../interfaces';
+import { getColumnIndexFromString } from './conversionHelper';
 
 export const getPieceOnSquare = (queriedSquare: ChessSquare, board: ChessBoard): ChessPiece => {
   const row = board.rows.find((row) => {
@@ -11,4 +12,13 @@ export const getPieceOnSquare = (queriedSquare: ChessSquare, board: ChessBoard):
     return square?.piece;
   }
   return undefined;
+};
+
+export const getDistanceBetweenSquares = (startingSquare: ChessSquare, destinationSquare: ChessSquare): number => {
+  return (
+    destinationSquare.location.number -
+    startingSquare.location.number +
+    (getColumnIndexFromString(destinationSquare.location.letter) -
+      getColumnIndexFromString(destinationSquare.location.letter))
+  );
 };

@@ -1,4 +1,4 @@
-import { ChessBoard, ChessSquare } from '../interfaces';
+import { ChessBoard, ChessSquare, MoveDirection } from '../interfaces';
 import { getPieceOnSquare } from './pieceHelper';
 import { getColumnIndexFromString, getColumnStringFromIndex } from './conversionHelper';
 
@@ -247,6 +247,40 @@ export const calculateLegalKnightSquares = (startingSquare: ChessSquare, board: 
     }
   });
   return legalSquares;
+};
+
+export const calculateLegalPawnCaptures = (
+  startingSquare: ChessSquare,
+  board: ChessBoard,
+  moveDirection: MoveDirection,
+): ChessSquare[] => {
+  const legalCaptures = [];
+  const startingColumn = getColumnIndexFromString(startingSquare.location.letter);
+  if (startingColumn !== 8) {
+    const captureCandidate: ChessSquare = {
+      location: {
+        letter: getColumnStringFromIndex(startingColumn + 1),
+        number: startingSquare.location.number + moveDirection - 1,
+      },
+    };
+    const captureCandidatePiece = getPieceOnSquare(captureCandidate, board);
+    if (captureCandidatePiece && captureCandidatePiece.color !== startingSquare.piece.color) {
+      legalCaptures.push(captureCandidate);
+    }
+  }
+  if (startingColumn !== 1) {
+    const captureCandidate: ChessSquare = {
+      location: {
+        letter: getColumnStringFromIndex(startingColumn - 1),
+        number: startingSquare.location.number + moveDirection - 1,
+      },
+    };
+    const captureCandidatePiece = getPieceOnSquare(captureCandidate, board);
+    if (captureCandidatePiece && captureCandidatePiece.color !== startingSquare.piece.color) {
+      legalCaptures.push(captureCandidate);
+    }
+  }
+  return legalCaptures;
 };
 
 const isOnBoard = (row: number, column: number): boolean => {

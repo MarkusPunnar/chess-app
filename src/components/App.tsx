@@ -3,11 +3,9 @@ import Chessboard from './Chessboard';
 import { RecoilRoot } from 'recoil';
 
 const App: React.FC<{}> = () => (
-  <div>
-    <RecoilRoot>
-      <Chessboard />
-    </RecoilRoot>
-  </div>
+  <RecoilRoot>
+    <Chessboard />
+  </RecoilRoot>
 );
 
 export default App;

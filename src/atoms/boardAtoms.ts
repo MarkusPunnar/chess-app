@@ -7,6 +7,11 @@ export const boardState = atom<ChessBoard>({
   default: initialBoard,
 });
 
+export const legalMovesState = atom<ChessSquare[]>({
+  key: 'LegalMovesState',
+  default: [],
+});
+
 export const selectedSquareState = atom<ChessSquare>({
   key: 'SelectedSquareState',
   default: undefined,

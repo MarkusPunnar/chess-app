@@ -7,14 +7,19 @@ module.exports = {
       light: '#e3d4cc',
       dark: '#647566',
     }),
+    borderRadius: {
+      circle: '50%',
+    },
     extend: {
       width: {
         '1/8': '12.5%',
+        15: '15px',
         400: '400px',
         800: '800px',
       },
       height: {
         '1/8': '12.5%',
+        15: '15px',
         400: '400px',
         800: '800px',
       },

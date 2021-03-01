@@ -1,14 +1,14 @@
 import React from 'react';
 import { ReactComponent as BlackKnight } from '../../assets/black/knight.svg';
 import { ReactComponent as WhiteKnight } from '../../assets/white/knight.svg';
-import { PieceColor } from '../../board/interfaces';
+import { ChessColor } from '../../board/interfaces';
 
 interface PieceProps {
-  color: PieceColor;
+  color: ChessColor;
 }
 
 const Knight: React.FC<PieceProps> = ({ color }) => {
-  const piece = color === PieceColor.WHITE ? <WhiteKnight /> : <BlackKnight />;
+  const piece = color === ChessColor.WHITE ? <WhiteKnight /> : <BlackKnight />;
   return <>{piece}</>;
 };
 
