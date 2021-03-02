@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { useRecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
-import { boardState, legalMovesState, selectedSquareState, targetedSquareState } from '../atoms/boardAtoms';
+import { boardState, legalMovesState, selectedSquareState, chessMoveState } from '../atoms/boardAtoms';
 import BoardRow from './BoardRow';
-import { ChessBoard, ChessColor, ChessPiece, PieceType } from '../board/interfaces';
-import { getPieceOnSquare } from '../board/helper/pieceHelper';
+import { ChessBoard, ChessColor, ChessPiece, ChessSquare } from '../board/interfaces';
+import { getPieceOnSquare } from '../board/helper/gameHelper';
 import { currentGameState } from '../atoms/gameAtoms';
 
-const Chessboard: React.FC<{}> = () => {
+const Chessboard: React.FC = () => {
   const [chessboard, setChessboard] = useRecoilState(boardState);
   const [gameState, setGameState] = useRecoilState(currentGameState);
   const selectedSquare = useRecoilValue(selectedSquareState);
-  const targetedSquare = useRecoilValue(targetedSquareState);
+  const chessMove = useRecoilValue(chessMoveState);
   const legalSquares = useRecoilValue(legalMovesState);
-  const resetTargetedSquare = useResetRecoilState(targetedSquareState);
+  const resetChessMove = useResetRecoilState(chessMoveState);
   const resetSelectedSquare = useResetRecoilState(selectedSquareState);
   const resetLegalSquares = useResetRecoilState(legalMovesState);
 
@@ -22,7 +22,7 @@ const Chessboard: React.FC<{}> = () => {
       const didMove = handleMove(piece);
       resetLegalSquares();
       resetSelectedSquare();
-      resetTargetedSquare();
+      resetChessMove();
       if (didMove) {
         setGameState({
           ...gameState,
@@ -30,21 +30,24 @@ const Chessboard: React.FC<{}> = () => {
         });
       }
     }
-  }, [targetedSquare]);
+  }, [chessMove]);
 
   const handleMove = (piece: ChessPiece): boolean => {
-    const targetedSquarePiece = getPieceOnSquare(targetedSquare, chessboard);
+    const destinationSquare = chessMove.destinationSquare;
+    const targetedSquarePiece = getPieceOnSquare(destinationSquare, chessboard);
     if (!targetedSquarePiece || targetedSquarePiece.color !== piece.color) {
       const isMoveAllowed = legalSquares.some((legalSquare) => {
-        return (
-          legalSquare.location.number === targetedSquare.location.number &&
-          legalSquare.location.letter === targetedSquare.location.letter
-        );
+        const { number, letter } = destinationSquare.location;
+        return legalSquare.location.number === number && legalSquare.location.letter === letter;
       });
       if (isMoveAllowed) {
         let updatedBoard: ChessBoard = JSON.parse(JSON.stringify(chessboard));
-        addPieceToNewPosition(updatedBoard, piece);
-        removePieceFromOldPosition(updatedBoard);
+        addPieceToSquare(updatedBoard, piece, chessMove.destinationSquare);
+        removePieceFromSquare(updatedBoard, chessMove.startingSquare);
+        if (chessMove.secondaryStartingSquare && chessMove.secondaryDestinationSquare) {
+          addPieceToSquare(updatedBoard, chessMove.secondaryStartingSquare.piece, chessMove.secondaryDestinationSquare);
+          removePieceFromSquare(updatedBoard, chessMove.secondaryStartingSquare);
+        }
         setChessboard(updatedBoard);
       }
       return isMoveAllowed;
@@ -52,13 +55,13 @@ const Chessboard: React.FC<{}> = () => {
     return false;
   };
 
-  const addPieceToNewPosition = (updatedBoard: ChessBoard, piece: ChessPiece) => {
+  const addPieceToSquare = (updatedBoard: ChessBoard, piece: ChessPiece, newSquare: ChessSquare) => {
     const rowIndex = updatedBoard.rows.findIndex((row) => {
-      return row.number === targetedSquare?.location.number;
+      return row.number === newSquare.location.number;
     });
     if (rowIndex !== -1) {
       const squareIndex = updatedBoard.rows[rowIndex].squares.findIndex((square) => {
-        return square.location.letter === targetedSquare?.location.letter;
+        return square.location.letter === newSquare.location.letter;
       });
       if (squareIndex !== -1) {
         updatedBoard.rows[rowIndex].squares[squareIndex].piece = piece;
@@ -66,13 +69,13 @@ const Chessboard: React.FC<{}> = () => {
     }
   };
 
-  const removePieceFromOldPosition = (updatedBoard: ChessBoard) => {
+  const removePieceFromSquare = (updatedBoard: ChessBoard, oldSquare: ChessSquare) => {
     const rowIndex = updatedBoard.rows.findIndex((row) => {
-      return row.number === selectedSquare?.location.number;
+      return row.number === oldSquare.location.number;
     });
     if (rowIndex !== -1) {
       const squareIndex = chessboard.rows[rowIndex].squares.findIndex((square) => {
-        return square.location.letter === selectedSquare?.location.letter;
+        return square.location.letter === oldSquare.location.letter;
       });
       if (squareIndex !== -1) {
         const currentSquare = updatedBoard.rows[rowIndex].squares[squareIndex];
@@ -82,7 +85,7 @@ const Chessboard: React.FC<{}> = () => {
   };
 
   return (
-    <div className={'flex flex-wrap w-400 h-400'}>
+    <div className={'flex flex-wrap w-resp h-resp'}>
       {chessboard.rows.map((row, rowIndex) => (
         <BoardRow row={row} key={rowIndex} />
       ))}

@@ -1,5 +1,5 @@
-import { ChessBoard, ChessSquare, MoveDirection } from '../interfaces';
-import { getPieceOnSquare } from './pieceHelper';
+import { ChessBoard, ChessColor, ChessSquare, GameState, MoveDirection } from '../interfaces';
+import { getPieceOnSquare } from './gameHelper';
 import { getColumnIndexFromString, getColumnStringFromIndex } from './conversionHelper';
 
 export const calculateLegalForwardSquares = (
@@ -281,6 +281,42 @@ export const calculateLegalPawnCaptures = (
     }
   }
   return legalCaptures;
+};
+
+export const calculateLegalCastles = (
+  startingSquare: ChessSquare,
+  board: ChessBoard,
+  gameState: GameState,
+): ChessSquare[] => {
+  const pieceColor = startingSquare.piece.color;
+  const legalCastles: ChessSquare[] = [];
+  const { number } = startingSquare.location;
+  const playerState = pieceColor === ChessColor.WHITE ? gameState.white : gameState.black;
+  const kingSideOpen = calculateLegalRightSquares(startingSquare, board).some((legalSquare) => {
+    const { letter: legalLetter, number: legalNumber } = legalSquare.location;
+    return legalLetter === 'g' && legalNumber === number;
+  });
+  const queenSideOpen = calculateLegalLeftSquares(startingSquare, board).some((legalSquare) => {
+    const { letter: legalLetter, number: legalNumber } = legalSquare.location;
+    return legalLetter === 'b' && legalNumber === number;
+  });
+  if (playerState.castleKingSide && kingSideOpen) {
+    legalCastles.push({
+      location: {
+        letter: 'g',
+        number,
+      },
+    });
+  }
+  if (playerState.castleQueenSide && queenSideOpen) {
+    legalCastles.push({
+      location: {
+        letter: 'c',
+        number,
+      },
+    });
+  }
+  return legalCastles;
 };
 
 const isOnBoard = (row: number, column: number): boolean => {

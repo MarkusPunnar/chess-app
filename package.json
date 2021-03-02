@@ -28,8 +28,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "build": "yarn build:tailwind && react-scripts build",
+    "lint": "eslint src --ext js,ts,tsx",
+    "format": "prettier --write \"./**\"",
     "build:tailwind": "tailwindcss build src/index.css -o src/tailwind.css"
   },
   "eslintConfig": {

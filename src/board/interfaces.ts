@@ -64,3 +64,8 @@ export interface ChessBoardRow {
 export interface ChessBoard {
   rows: ChessBoardRow[];
 }
+
+export interface PieceProps {
+  color: ChessColor;
+  boardSize: number;
+}

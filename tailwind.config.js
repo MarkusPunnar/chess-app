@@ -16,12 +16,14 @@ module.exports = {
         15: '15px',
         400: '400px',
         800: '800px',
+        resp: 'calc(min(100vw, 100vh) - 32px)',
       },
       height: {
         '1/8': '12.5%',
         15: '15px',
         400: '400px',
         800: '800px',
+        resp: 'calc(min(100vw, 100vh) - 32px)',
       },
       padding: {
         25: '25px',

@@ -1,6 +1,6 @@
 import { atom } from 'recoil';
 import initialBoard from '../board/initialBoard';
-import { ChessBoard, ChessSquare } from '../board/interfaces';
+import { ChessBoard, ChessMove, ChessSquare } from '../board/interfaces';
 
 export const boardState = atom<ChessBoard>({
   key: 'BoardState',
@@ -17,7 +17,7 @@ export const selectedSquareState = atom<ChessSquare>({
   default: undefined,
 });
 
-export const targetedSquareState = atom<ChessSquare>({
-  key: 'TargetedSquareState',
+export const chessMoveState = atom<ChessMove>({
+  key: 'ChessMoveState',
   default: undefined,
 });

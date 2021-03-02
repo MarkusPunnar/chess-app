@@ -1,14 +1,15 @@
 import React from 'react';
 import { ReactComponent as BlackBishop } from '../../assets/black/bishop.svg';
 import { ReactComponent as WhiteBishop } from '../../assets/white/bishop.svg';
-import { ChessColor } from '../../board/interfaces';
+import { ChessColor, PieceProps } from '../../board/interfaces';
 
-interface PieceProps {
-  color: ChessColor;
-}
-
-const Bishop: React.FC<PieceProps> = ({ color }) => {
-  const piece = color === ChessColor.WHITE ? <WhiteBishop /> : <BlackBishop />;
+const Bishop: React.FC<PieceProps> = ({ color, boardSize }) => {
+  const piece =
+    color === ChessColor.WHITE ? (
+      <WhiteBishop transform={`scale(${(boardSize * 8) / 400})`} />
+    ) : (
+      <BlackBishop transform={`scale(${(boardSize * 8) / 400})`} />
+    );
   return <>{piece}</>;
 };
 
